@@ -1,10 +1,18 @@
 import React, { useState } from 'react';
 
+import './App.css';
+
 const App = () => {
   const [firstDate, setFirstDate] = useState(new Date().toISOString().slice(0, 16));
   const [secondDate, setSecondDate] = useState(new Date().toISOString().slice(0, 16));
+  const [lastChange, setLastChange] = useState('None');
   const [bgColor, setBgColor] = useState('#FFFFFF');
   const [textColor, setTextColor] = useState('#000000');
+
+  const handleDateChange = (e, dateSetter) => {
+    dateSetter(e.target.value);
+    setLastChange(new Date().toLocaleString());
+  };
   
   const calculateDifference = () => {
     const diffMs = new Date(secondDate) - new Date(firstDate);
@@ -43,16 +51,18 @@ const App = () => {
         <input 
           type="datetime-local" 
           value={firstDate}
-          onChange={e => setFirstDate(e.target.value)} 
+          onChange={(e) => handleDateChange(e, setFirstDate)}
         />
         <input 
           type="datetime-local" 
           value={secondDate}
-          onChange={e => setSecondDate(e.target.value)} 
+          onChange={(e) => handleDateChange(e, setSecondDate)}
         />
-        <div>{calculateDifference()}</div>
+        <p>Time difference: {calculateDifference()}</p>
+        <i>Last change: {lastChange}</i>
       </div>
 
+      <br></br>
       <p>Please make your color combo selection:</p>
       <div>
         <input 
